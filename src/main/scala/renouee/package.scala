@@ -1,4 +1,4 @@
-import org.apache.commons.math3.random.RandomGenerator
+import org.apache.commons.math3.random._
 
 import scala.util.Random
 
@@ -17,5 +17,8 @@ package object renouee {
     override def setSeed(seed: Array[Int]): Unit = ???
     override def setSeed(seed: Long): Unit = random.setSeed(seed)
   }
+
+
+  def random(seed: Long) = new util.Random(new RandomAdaptor(new Well44497b(seed)))
 
 }

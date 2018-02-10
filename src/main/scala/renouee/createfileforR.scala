@@ -57,7 +57,7 @@ package object createfileforR {
         g.appendLine().append("scale," + Plant.scale)
         g.appendLine().append("a_0," + Plant.a_0(Plant.K))
         g.appendLine().append("bbar," + Plant.bbar)
-        g.appendLine().append("mowing_parameter," + Plant.mowing_parameter)
+        g.appendLine().append("mowing_parameter," + Plant.mowingParameter)
 
       }
 

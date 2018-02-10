@@ -2,9 +2,13 @@ package renouee
 
 
 import java.io.File
+
 import org.apache.commons.math3.distribution.UniformRealDistribution
+
 import scala.annotation.tailrec
 import better.files._
+
+import scala.util.Random
 
 
 
@@ -34,20 +38,18 @@ object RunCalibration {
  final pop size to calculate density (easy to do if we have the list of positions).
   */
 
-  def resultEvolutionABC(initialPopSizes: Seq[Double])(T: Double = parameter.T, tau: Seq[Double], proportionMowing: Seq[Double] )
-                        (K : Double = Plant.K, L : Double = Plant.L, d1: Double = Plant.d1, b1 : Double = Plant.b1,
-                                    shape : Double = Plant.shape, scale : Double = Plant.scale, deathParameterDecrease: Double = Plant.deathParameterDecrease,
-                                    deathParameterScaling: Double = Plant.deathParameterScaling, mowing_parameter  : Double = Plant.mowing_parameter,
-                                    bbar:Double = Plant.bbar, a_0 : Double ) : ResultCalibrateABC ={
+  def resultEvolutionABC(initialPopSizes: Seq[Double])(Nmax : Int = parameter.Nmax, compteurMax : Int = parameter.compteurMax,
+                                                       managementInitialPops: Management,
+                                                       managementSeveralEvolution: ManagementSeveralEvolution,
+                                                       plantGrowth: PlantGrowth, managementTechnique: ManagementTechnique)
+                                                       (implicit random: Random): ResultCalibrateABC ={
     // recall that the creation of all initial pop is done with the same mowing param (not the same during the evolution)
-    val temp_initial_pop =  createInitialPop.createSeveralInitialPop(initialPopSizes)(Plant.tau, Plant.proportionMowing,
-      K, L, d1, b1, shape, scale, deathParameterDecrease, deathParameterScaling, mowing_parameter, bbar, a_0)
-    val final_pop = Run.severalFinalPop(temp_initial_pop)(T, tau, proportionMowing)(K, L, d1, b1, shape, scale, deathParameterDecrease, deathParameterScaling, mowing_parameter,bbar,a_0)
+    val temp_initial_pop =  createInitialPop.createSeveralInitialPop(initialPopSizes)(parameter.Nmax, parameter.compteurMax,managementInitialPops,plantGrowth )(random)
+
+    val final_pop = Run.severalFinalPop(temp_initial_pop)(managementSeveralEvolution,plantGrowth,managementTechnique)(random)
+
     ResultCalibrateABC(temp_initial_pop.map(p => p.plants) , final_pop.map(p => p.plants) , temp_initial_pop.map(p => p.plants.length) , final_pop.map(p => p.plants.length))
   }
-
-
-
 
 
   //////////////////////////////////////////////////
@@ -62,15 +64,13 @@ object RunCalibration {
   Remark : we don't use the Seq[Int] of the class ResultCalibrateABC (R does it also)
   */
 
-  def evolutionWriteABC(initialPopSizes: Seq[Double])(file1 : java.io.File, file2 : java.io.File)
-                        (T: Double = parameter.T , tau: Seq[Double] , p: Seq[Double] )
-                        (K : Double = Plant.K, L : Double = Plant.L, d1: Double = Plant.d1, b1 : Double = Plant.b1,
-                        shape : Double = Plant.shape, scale : Double = Plant.scale, deathParameterDecrease: Double = Plant.deathParameterDecrease,
-                         deathParameterScaling: Double = Plant.deathParameterScaling, mowing_parameter  : Double = Plant.mowing_parameter,
-                         bbar:Double = Plant.bbar, a_0 : Double ) = {
+  def evolutionWriteABC(initialPopSizes: Seq[Double])(file1 : java.io.File, file2 : java.io.File)(Nmax : Int = parameter.Nmax, compteurMax : Int = parameter.compteurMax,
+                         managementInitialPops: Management,
+                         managementSeveralEvolution: ManagementSeveralEvolution,
+                         plantGrowth: PlantGrowth, managementTechnique: ManagementTechnique)
+                         (implicit random: Random) = {
 
-    val res = resultEvolutionABC(initialPopSizes)(T, tau , p ) (K , L , d1, b1 , shape ,
-      scale , deathParameterDecrease, deathParameterScaling, mowing_parameter,bbar,a_0)
+    val res = resultEvolutionABC(initialPopSizes)(Nmax,compteurMax,managementInitialPops,managementSeveralEvolution,plantGrowth,managementTechnique)(random)
     // record positions of initial population (2008)
     slaveArgumentsFiles.createFilesPositionsABC(res.popinis, file1 , "pos_popIni_")
 

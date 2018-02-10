@@ -2,6 +2,7 @@ package renouee
 
 import better.files.File
 import org.apache.commons.math3.distribution.UniformRealDistribution
+import org.apache.commons.math3.random.{RandomAdaptor, Well44497b}
 
 object calcul2_1Run_History extends App {
 
@@ -18,11 +19,12 @@ object calcul2_1Run_History extends App {
   - a file with the history (time, popsize, area(scala, rectangle), event)
   */
 
-  val initialPopulation = createInitialPop.createPopIni(Plant.initialPopulationSize) : PlantEvolution
+  val rng = new RandomAdaptor(new Well44497b(43))
 
-  val res = Run.simuHistory(initialPopulation,parameter.T , Plant.tau, Plant.proportionMowing ,Plant.K,  Plant.L, Plant.d1, Plant.b1, Plant.shape,
-    Plant.scale, Plant.deathParameterDecrease,  Plant.deathParameterScaling, Plant.mowing_parameter,
-    Plant.bbar, Plant.a_0(Plant.K))
+  val initialPopulation = createInitialPop.createPopIni(Plant.initialPopulationSize,parameter.Nmax,parameter.compteurMax,
+    Management(tau= 1.0, proportionMowing = 0.9),PlantGrowth())(rng) : PlantEvolution
+
+  val res = Run.simu(initialPopulation,Management(),PlantGrowth(),ResultType.Last,ManagementTechnique.Alea)(rng)
 
 
   lazy val name_Dir1 = "1run"
