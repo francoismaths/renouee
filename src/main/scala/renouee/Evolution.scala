@@ -99,14 +99,14 @@ object Evolution {
 
 
 
-      if (fieldutil.birth(plantGrowth.b1)(xParent, yParent, xpos.toList, ypos.toList) && fieldutil.intraSpecificCompetition(plantGrowth.d1)(i, newx, newy, xpos.toList, ypos.toList)) {
+      if (fieldutil.birth(plantGrowth.distanceParent)(xParent, yParent, xpos.toList, ypos.toList) && fieldutil.intraSpecificCompetition(plantGrowth.distanceCompetition)(i, newx, newy, xpos.toList, ypos.toList)) {
         /*   say if the potential child really appear in the pop (if he is not "killed" immediately by intra psecific competition or if the parent
         has alreay given birth to his children
          */
         // evolution of biomasse and add a new plant in the pop
 
         resultType match {
-          case ResultType.Last => PlantEvolution( tempEvolBiomass.plants :+ Plant(newx, newy, plantGrowth.a0), Seq(InfosEvolution(t, pop_size + 1, fieldutil.area(xpos :+ newx, ypos :+ newy), "birth")))
+          case ResultType.Last => PlantEvolution( tempEvolBiomass.plants :+ Plant(newx, newy, plantGrowth.a0), Vector(InfosEvolution(t, pop_size + 1, fieldutil.area(xpos :+ newx, ypos :+ newy), "birth")))
 
           case ResultType.All =>
             PlantEvolution( tempEvolBiomass.plants :+ Plant(newx, newy, plantGrowth.a0),
@@ -119,7 +119,7 @@ object Evolution {
 
         resultType match {
           case ResultType.Last => PlantEvolution(tempEvolBiomass.plants,
-            Seq(InfosEvolution(t, pop_size, fieldutil.area(xpos, ypos), "Nobirth")))
+            Vector(InfosEvolution(t, pop_size, fieldutil.area(xpos, ypos), "Nobirth")))
 
           case ResultType.All => PlantEvolution(tempEvolBiomass.plants,
             plantEvolution.infosEvolution :+ InfosEvolution(t, pop_size, fieldutil.area(xpos, ypos), "Nobirth"))
@@ -150,7 +150,7 @@ object Evolution {
 
         resultType match {
           case ResultType.Last =>   PlantEvolution( fieldutil.delete(j, tempEvolBiomass.plants.toList).toVector
-            , Seq(InfosEvolution(t, pop_size - 1, fieldutil.area(fieldutil.delete(j, xpos.toList), fieldutil.delete(j, ypos.toList)), "death")))
+            , Vector(InfosEvolution(t, pop_size - 1, fieldutil.area(fieldutil.delete(j, xpos.toList), fieldutil.delete(j, ypos.toList)), "death")))
 
           case ResultType.All =>    PlantEvolution(fieldutil.delete(j, tempEvolBiomass.plants.toList).toVector
             , plantEvolution.infosEvolution :+ InfosEvolution(t, pop_size - 1, fieldutil.area(fieldutil.delete(j, xpos.toList), fieldutil.delete(j, ypos.toList)), "death"))
@@ -161,7 +161,7 @@ object Evolution {
 
       else {  // no death
         resultType match {
-          case ResultType.Last =>  PlantEvolution(tempEvolBiomass.plants, Seq(InfosEvolution(t, pop_size, fieldutil.area(xpos, ypos), "Nodeath")))
+          case ResultType.Last =>  PlantEvolution(tempEvolBiomass.plants, Vector(InfosEvolution(t, pop_size, fieldutil.area(xpos, ypos), "Nodeath")))
 
           case ResultType.All =>          PlantEvolution( tempEvolBiomass.plants
             , plantEvolution.infosEvolution :+ InfosEvolution(t, pop_size, fieldutil.area(xpos, ypos), "Nodeath"))

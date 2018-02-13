@@ -17,7 +17,7 @@ package object fieldutil {
 
   ////////////////////////////////////////////
 
-  def intraSpecificCompetition(d1: Double = Plant.d1)(j: Int, x: Double, y: Double, l1: List[Double], l2: List[Double]): Boolean = {
+  def intraSpecificCompetition(d1: Double )(j: Int, x: Double, y: Double, l1: List[Double], l2: List[Double]): Boolean = {
     /* intra specific competition : the new inidividual is not created if he birth to close from an other individual already present in the population
       return T or F : T if the new individual can be created
       require j : the position of the parent in the lists;  l1,l2 of the positions of every individual in the population
@@ -36,7 +36,7 @@ package object fieldutil {
   /////////////////////////////////////////
   // birth rate function : = 1 if not already given birth to 2 children (still present in the pop), 0 otherwise
 
-  def birth(b1: Double = Plant.b1)(x: Double, y: Double, l1: List[Double], l2: List[Double]): Boolean = {
+  def birth(b1: Double )(x: Double, y: Double, l1: List[Double], l2: List[Double]): Boolean = {
     /* return T or F,
     require : l1,l2 : positions of all the indiv in the population, require x,y : the position of the parent in the lists;
     birth returns false if the individual selected in the population (j) has already other indiv next to him :

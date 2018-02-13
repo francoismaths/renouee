@@ -19,19 +19,27 @@ object calcul2_1Run_History extends App {
   - a file with the history (time, popsize, area(scala, rectangle), event)
   */
 
-  val rng = new RandomAdaptor(new Well44497b(43))
+  val rng = new RandomAdaptor(new Well44497b(1))
 
-  val initialPopulation = createInitialPop.createPopIni(Plant.initialPopulationSize,parameter.Nmax,parameter.compteurMax,
-    Management(tau= 1.0, proportionMowing = 0.9),PlantGrowth())(rng) : PlantEvolution
+  val initialPopulationSize = 1000
+  val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
+  val management = Management(tau=3)
+  val plantGrowth = PlantGrowth()
+  val managementTechnique = ManagementTechnique.Alea
 
-  val res = Run.simu(initialPopulation,Management(),PlantGrowth(),ResultType.Last,ManagementTechnique.Alea)(rng)
+
+
+  val initialPopulation = createInitialPop.createPopIni(initialPopulationSize,parameter.Nmax,parameter.compteurMax,
+    managementPopIni,plantGrowth)(rng) : PlantEvolution
+
+  val res = Run.simu(initialPopulation,management,plantGrowth,ResultType.All,managementTechnique)(rng)
 
 
   lazy val name_Dir1 = "1run"
   lazy val dir1 = new java.io.File(name_Dir1)
   dir1.mkdir()
 
-  createfileforR.writeResultSingleExperiment(initialPopulation,res,dir1)
+  createfileforR.writeResultSingleExperiment(initialPopulation,res,dir1,plantGrowth,management, managementTechnique )
 
 
 

@@ -25,3 +25,4 @@ release/*
 .DS_Store
 *.history
 data_allegee/
+src/main/scala/renouee/test*

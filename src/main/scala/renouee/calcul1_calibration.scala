@@ -28,15 +28,24 @@ object calcul1_calibration extends App {
   dir1.mkdir()
   dir2.mkdir()
 
+
+
+  val proportionMowingForSeq = 0.8
+
   //  Pour tester rapidement
-  lazy val p = Seq(1,0,0,1,0,1,1).map(p=> if(p==1)(1) else(Plant.proportionMowing))  // because the file just says if fullMow or not
+  lazy val p = Seq(1,0,0,1,0,1,1).map(p=> if(p==1)(1) else(proportionMowingForSeq))  // because the file just says if fullMow or not
   lazy val tau = Seq(3,0,1,2,1,1,3).map(_.toDouble)
   lazy val popSizes = Seq(3.0,10.0,18.0,35.0,10.0,10.0,40.0)
 
 
+  val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
+  val managementSeveralEvolution = ManagementSeveralEvolution(tau=tau,proportionMowing = p)
+  val plantGrowth = PlantGrowth()
+  val managementTechnique = ManagementTechnique.Alea
+
 
     RunCalibration.evolutionWriteABC(popSizes)( dir1, dir2)(parameter.Nmax, parameter.compteurMax,
-      Management(tau= 1.0, proportionMowing = 0.9),ManagementSeveralEvolution(T=parameter.T,tau=tau,proportionMowing = p),PlantGrowth(),ManagementTechnique.Alea)(rng)
+      managementPopIni,managementSeveralEvolution,plantGrowth,managementTechnique)(rng)
 
 
   }

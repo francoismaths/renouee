@@ -53,7 +53,7 @@ object Run {
   def slaveSeveralFinalPop(initialPops: Seq[PlantEvolution])(managementSeveralEvolution: ManagementSeveralEvolution,
                                                              plantGrowth: PlantGrowth,
                                                              managementTechnique: ManagementTechnique,
-                                                             res: Seq[PlantEvolution] = Seq(PlantEvolution(Nil.toVector,Nil)) )
+                                                             res: Seq[PlantEvolution] = Seq(PlantEvolution(Nil.toVector,Nil.toVector)) )
                                                              (implicit random: Random) : Seq[PlantEvolution] = {
     if (initialPops.isEmpty) res
     else {
@@ -73,7 +73,7 @@ object Run {
   def severalFinalPop(initialPops: Seq[PlantEvolution] )(managementSeveralEvolution: ManagementSeveralEvolution,
                                                          plantGrowth: PlantGrowth,
                                                          managementTechnique: ManagementTechnique)(implicit random: Random): Seq[PlantEvolution] ={
-    slaveSeveralFinalPop(initialPops)(managementSeveralEvolution, plantGrowth, managementTechnique, Seq(PlantEvolution(Nil.toVector,Nil)))(random).tail
+    slaveSeveralFinalPop(initialPops)(managementSeveralEvolution, plantGrowth, managementTechnique, Seq(PlantEvolution(Nil.toVector,Nil.toVector)))(random).tail
   }
 
 

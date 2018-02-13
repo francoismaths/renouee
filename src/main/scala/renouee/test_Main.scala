@@ -90,9 +90,12 @@ object test_Main extends App {
   ///////////////  test pop ini avec modif du temps dans seqevol...   ////////////////
 
 
-  val res = createInitialPop.createInitialPopEvolution(5,parameter.Nmax, Management(), PlantGrowth() )
+  val res = createInitialPop.createInitialPopEvolution(5,parameter.Nmax, Management(), PlantGrowth() )(rng)
 
   println(res)
+
+  ///////////////               ////////////////
+
 
 
 }

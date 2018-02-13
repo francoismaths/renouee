@@ -40,7 +40,7 @@ object createInitialPop {
                                 management: Management,
                                 plantGrowth: PlantGrowth  )(implicit random: Random): PlantEvolution = {
 
-    val pop0 = PlantEvolution(Seq(Plant(0.0,0.0, plantGrowth.biomassFirstIndiv)).toVector , Seq(InfosEvolution(0,0,0.0,""))  ) : PlantEvolution
+    val pop0 = PlantEvolution(Seq(Plant(0.0,0.0, plantGrowth.biomassFirstIndiv)).toVector , Vector(InfosEvolution(0,0,0.0,""))  ) : PlantEvolution
     val res = slaveSimuInitialPopEvolution(pop0,0,Nmax, initialPopSize, management,plantGrowth)(random)
 
     //  en modifiant avec Lens
@@ -48,7 +48,8 @@ object createInitialPop {
     val allBiomases = PlantEvolution.plants composeTraversal Each.each composeLens Plant.biomass
     //timeToModify.modify(0.0)(res) : PlantEvolution
 
-    PlantEvolution(res.plants,Seq(InfosEvolution(popSize = res.plants.length)))
+    PlantEvolution(res.plants,Vector(InfosEvolution(popSize = res.plants.length,
+      area = fieldutil.area(res.plants.map(p => p.x),res.plants.map(p => p.y) ))))
 
   }
 
@@ -65,7 +66,7 @@ object createInitialPop {
                         management: Management,
                         plantGrowth: PlantGrowth  )(implicit random: Random) : PlantEvolution = {
 
-    if (compteur > compteurMax)   PlantEvolution(Nil.toVector,Nil)
+    if (compteur > compteurMax)   PlantEvolution(Nil.toVector,Nil.toVector)
     else {
 
       val temp  = createInitialPop.createInitialPopEvolution(initialPopSize, Nmax, management, plantGrowth )(random)
@@ -99,7 +100,7 @@ object createInitialPop {
   def slaveCreateSeveralInitialPop(initialPopSizes: Seq[Double])(Nmax : Int = parameter.Nmax, compteurMax : Int = parameter.compteurMax,
                                                                  management: Management,
                                                                  plantGrowth: PlantGrowth,
-                                                                 res: Seq[PlantEvolution] = Seq(PlantEvolution(Nil.toVector,Nil)) )
+                                                                 res: Seq[PlantEvolution] = Seq(PlantEvolution(Nil.toVector,Nil.toVector)) )
                                                                  (implicit random: Random) : Seq[PlantEvolution] = {
     if (initialPopSizes.isEmpty) res
     else {
@@ -121,7 +122,7 @@ object createInitialPop {
                                                             plantGrowth: PlantGrowth)
                                                             (implicit random: Random): Seq[PlantEvolution] = {
 
-    slaveCreateSeveralInitialPop(initialPopSizes)(Nmax,compteurMax, management, plantGrowth, Seq(PlantEvolution(Nil.toVector,Nil)))(random).tail
+    slaveCreateSeveralInitialPop(initialPopSizes)(Nmax,compteurMax, management, plantGrowth, Seq(PlantEvolution(Nil.toVector,Nil.toVector)))(random).tail
   }
 
 

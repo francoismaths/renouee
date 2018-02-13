@@ -42,22 +42,27 @@ package object createfileforR {
 
 
       // write parameters in a text document (to use in R for visualisation)
-      def writeParameters (g : better.files.File)= {
+      def writeParameters (g : better.files.File, plantGrowth: PlantGrowth, management: Management,managementTechnique: ManagementTechnique)= {
         g.overwrite("parameter,value")
-        g.appendLine().append("T," + parameter.T)
-        g.appendLine().append("tau," + Plant.tau)
-        g.appendLine().append("p," + Plant.proportionMowing)
-        g.appendLine().append("deathParameterScaling," + Plant.deathParameterScaling)
+        // Management
+        g.appendLine().append("T," + management.T)
+        g.appendLine().append("tau," + management.tau)
+        g.appendLine().append("p," + management.proportionMowing)
+        // PlantGrowth
+        g.appendLine().append("L," + plantGrowth.L)
+        g.appendLine().append("K," + plantGrowth.K)
+        g.appendLine().append("distanceParent," + plantGrowth.distanceParent)
+        g.appendLine().append("distanceCompetition," + plantGrowth.distanceCompetition)
+        g.appendLine().append("shape," + plantGrowth.shape)
+        g.appendLine().append("scale," + plantGrowth.scale)
+        g.appendLine().append("a_0," + plantGrowth.a0)
+        g.appendLine().append("bbar," + plantGrowth.bbar)
+        g.appendLine().append("deathParameterScaling," + plantGrowth.deathParameterScaling)
+        g.appendLine().append("deathParameterDecrease," + plantGrowth.deathParameterDecrease)
+        g.appendLine().append("mowing_parameter," + plantGrowth.mowingParameter)
+        //
+        g.appendLine().append("ManagementTechnique," + managementTechnique)
         g.appendLine().append("InitialPopSize," + Plant.initialPopulationSize)
-        g.appendLine().append("L," + Plant.L)
-        g.appendLine().append("K," + Plant.K)
-        g.appendLine().append("b1," + Plant.b1)
-        g.appendLine().append("d1," + Plant.d1)
-        g.appendLine().append("shape," + Plant.shape)
-        g.appendLine().append("scale," + Plant.scale)
-        g.appendLine().append("a_0," + Plant.a_0(Plant.K))
-        g.appendLine().append("bbar," + Plant.bbar)
-        g.appendLine().append("mowing_parameter," + Plant.mowingParameter)
 
       }
 
@@ -70,7 +75,7 @@ package object createfileforR {
   //////////////////////////////////////////////////////////
   ////////////    Single Experiment
   /////////////////////////////////////////////////////////
-  def writeResultSingleExperiment(initialPlants : PlantEvolution, resultEvolution : PlantEvolution, file : java.io.File  )  ={
+  def writeResultSingleExperiment(initialPlants : PlantEvolution, resultEvolution : PlantEvolution, file : java.io.File, plantGrowth: PlantGrowth,management: Management,managementTechnique: ManagementTechnique  )  ={
     // write initial plants
 
     val e = file.toScala /  "renouee_initial_pop.txt"
@@ -82,7 +87,7 @@ package object createfileforR {
 
     //  write parameters
     val g = file.toScala /  "parameters_renouee.txt"
-    createfileforR.writeParameters(g)
+    createfileforR.writeParameters(g,plantGrowth,management,managementTechnique)
 
     // write history
     val h = file.toScala / "result_renouee_history.txt"

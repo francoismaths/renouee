@@ -72,7 +72,7 @@ object ManagementTechniqueUtil {
     //val tempAfterMow = plantEvolution.plants.map(q => q.copy(biomass = (fieldutil.mowingEffectPeriphery(plantGrowth.mowingParameter)(distanceLimitMow,xCenterStand,yCenterStand)(q))(q.biomass)))
 
     resultType match {
-      case ResultType.Last => PlantEvolution(tempAfterMow.plants, Seq(InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowPeriphery")) )
+      case ResultType.Last => PlantEvolution(tempAfterMow.plants, Vector(InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowPeriphery")) )
 
       case ResultType.All => PlantEvolution(tempAfterMow.plants, plantEvolution.infosEvolution :+ InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowPeriphery") )
 
@@ -117,7 +117,7 @@ object ManagementTechniqueUtil {
 
 
     resultType match {
-      case ResultType.Last => PlantEvolution(tempAfterMow.plants, Seq(InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowSide")) )
+      case ResultType.Last => PlantEvolution(tempAfterMow.plants, Vector(InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowSide")) )
 
       case ResultType.All => PlantEvolution(tempAfterMow.plants, plantEvolution.infosEvolution :+ InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowSide") )
     }
@@ -147,9 +147,9 @@ object ManagementTechniqueUtil {
     //val tempAfterMow = plantEvolution.plants.map(q => q.copy(biomass = fieldutil.mowingEffect(management.proportionMowing)(plantGrowth.mowingParameter)(q.biomass)(random)))
 
     resultType match {
-      case ResultType.Last => PlantEvolution(tempAfterMow2.plants, Seq(InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowSide")))
+      case ResultType.Last => PlantEvolution(tempAfterMow2.plants, Vector(InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowAlea")))
 
-      case ResultType.All => PlantEvolution(tempAfterMow2.plants, plantEvolution.infosEvolution :+ InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowSide"))
+      case ResultType.All => PlantEvolution(tempAfterMow2.plants, plantEvolution.infosEvolution :+ InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowAlea"))
     }
   }
 
@@ -177,7 +177,7 @@ object ManagementTechniqueUtil {
 
 
     resultType match {
-      case ResultType.Last => PlantEvolution(tempAfterMow.plants, Seq(InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowSideXPosition")) )
+      case ResultType.Last => PlantEvolution(tempAfterMow.plants, Vector(InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowSideXPosition")) )
 
       case ResultType.All => PlantEvolution(tempAfterMow.plants, plantEvolution.infosEvolution :+ InfosEvolution(t, popSize, fieldutil.area(xPos, yPos), "MowSideXPosition") )
     }
