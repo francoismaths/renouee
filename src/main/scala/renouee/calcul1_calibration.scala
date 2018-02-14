@@ -10,11 +10,13 @@ Creation of directories to record positions (for R analysis).
 
 object calcul1_calibration extends App {
 
-/*
-  lazy val p = slaveArgumentsFiles.fileToSeq("data_allegee/p_allegee").map(p=> if(p==1)(1) else(Plant.proportionMowing))
+
+  val proportionMowingForSeq = 0.8
+
+  lazy val p = slaveArgumentsFiles.fileToSeq("data_allegee/p_allegee").map(p=> if(p==1)(1) else(proportionMowingForSeq))
   lazy val tau = slaveArgumentsFiles.fileToSeq("data_allegee/tau_allegee")
   lazy val popSizes = slaveArgumentsFiles.fileToSeq("data_allegee/taillePop2008_allegee")
- */
+
 
   val rng = new RandomAdaptor(new Well44497b(43))
 
@@ -30,24 +32,30 @@ object calcul1_calibration extends App {
 
 
 
-  val proportionMowingForSeq = 0.8
 
+  /*
   //  Pour tester rapidement
   lazy val p = Seq(1,0,0,1,0,1,1).map(p=> if(p==1)(1) else(proportionMowingForSeq))  // because the file just says if fullMow or not
   lazy val tau = Seq(3,0,1,2,1,1,3).map(_.toDouble)
   lazy val popSizes = Seq(3.0,10.0,18.0,35.0,10.0,10.0,40.0)
+*/
 
+  val NmaxPopsInis = popSizes.map(s => (2*s / 0.005).toInt)
 
+  println(popSizes.sorted)
+  println(NmaxPopsInis.sorted)
+
+/*
   val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
   val managementSeveralEvolution = ManagementSeveralEvolution(tau=tau,proportionMowing = p)
   val plantGrowth = PlantGrowth()
   val managementTechnique = ManagementTechnique.Alea
 
 
-    RunCalibration.evolutionWriteABC(popSizes)( dir1, dir2)(parameter.Nmax, parameter.compteurMax,
+    RunCalibration.evolutionWriteABC(popSizes)( dir1, dir2)(NmaxPopsInis, parameter.compteurMax, parameter.Nmax)(
       managementPopIni,managementSeveralEvolution,plantGrowth,managementTechnique)(rng)
 
-
+*/
   }
 
 

@@ -24,3 +24,7 @@ b(4)
 
 math.floor(5.5)
 
+List.fill(10)(3)
+
+
+

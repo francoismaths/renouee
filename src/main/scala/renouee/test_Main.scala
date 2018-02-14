@@ -89,13 +89,21 @@ object test_Main extends App {
  */
   ///////////////  test pop ini avec modif du temps dans seqevol...   ////////////////
 
-
+/*
   val res = createInitialPop.createInitialPopEvolution(5,parameter.Nmax, Management(), PlantGrowth() )(rng)
 
   println(res)
+*/
 
-  ///////////////               ////////////////
+  ///////////////  test NmaxPopIni pour                ////////////////
 
+  val initialPopSize = 1000
+  val res = createInitialPop.createPopIni2(initialPopSize ,math.round(2*initialPopSize/0.005).toInt,2,Management(),PlantGrowth())
 
+  println(res.plants.length)
 
+/*
+  val res = createInitialPop.createPopIni(1000,50000,2,Management(),PlantGrowth())
+  println(res.plants.length)
+*/
 }

@@ -10,14 +10,14 @@ object calcul4_separation extends App {
 
   //val resAlea = ManagementTechniqueUtil.mowingAlea(popIni,Management(proportionMowing = 0.7),PlantGrowth(),ResultType.Last,1)
 
-  val resEvolAleaT = Run.simu(popIni,Management(tau = 3,T = 8.0),PlantGrowth(),ResultType.Last,ManagementTechnique.Alea)
+  val resEvolAleaT = Run.simu(popIni,parameter.Nmax, Management(tau = 3,T = 8.0),PlantGrowth(),ResultType.Last,ManagementTechnique.Alea)
 
 
-  val resEvolPerypheryT = Run.simu(popIni,Management(tau = 3,proportionMowing = 0.8),PlantGrowth(),ResultType.Last,ManagementTechnique.Periphery)
+  val resEvolPerypheryT = Run.simu(popIni,parameter.Nmax, Management(tau = 3,proportionMowing = 0.8),PlantGrowth(),ResultType.Last,ManagementTechnique.Periphery)
 
-  val resEvolSideT = Run.simu(popIni,Management(tau = 3,proportionMowing = 0.8),PlantGrowth(),ResultType.Last,ManagementTechnique.Side)
+  val resEvolSideT = Run.simu(popIni,parameter.Nmax, Management(tau = 3,proportionMowing = 0.8),PlantGrowth(),ResultType.Last,ManagementTechnique.Side)
 
-  val resEvolSideXPositionT = Run.simu(popIni,Management(tau = 3,xAxisMowLimit = 0),PlantGrowth(),ResultType.Last,ManagementTechnique.SideXPosition)
+  val resEvolSideXPositionT = Run.simu(popIni,parameter.Nmax, Management(tau = 3,xAxisMowLimit = 0),PlantGrowth(),ResultType.Last,ManagementTechnique.SideXPosition)
 
   //println(resEvolSideXPositionT)
 

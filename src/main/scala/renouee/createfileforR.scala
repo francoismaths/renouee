@@ -93,6 +93,10 @@ package object createfileforR {
     val h = file.toScala / "result_renouee_history.txt"
     createfileforR.writeHistory(h,clearEvents(resultEvolution))
 
+    // write FULL history (no clear)
+    val i = file.toScala / "result_renouee_FULLhistory.txt"
+    createfileforR.writeHistory(i, resultEvolution.infosEvolution)
+
   }
 
 

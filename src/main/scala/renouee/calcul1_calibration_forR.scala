@@ -50,8 +50,10 @@ object calcul1_calibration_forR {
 
 
 
+    val NmaxPopsInis = popSizes.map(s => (2*s / 0.005 ).toInt) : Seq[Int]
 
-    RunCalibration.evolutionWriteABC(popSizes)( dir1, dir2)(parameter.Nmax, parameter.compteurMax,
+
+    RunCalibration.evolutionWriteABC(popSizes)( dir1, dir2)(NmaxPopsInis, parameter.compteurMax,parameter.Nmax)(
       managementPopIni,managementSeveralEvolution,
     PlantGrowth(  distanceCompetition = params(0), distanceParent = params(1), shape = params(2), scale = params(3), K = params(4), L= params(5),
       mowingParameter= params(6), deathParameterDecrease= params(7), deathParameterScaling = params(8),
