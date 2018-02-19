@@ -45,17 +45,18 @@ object calcul1_calibration extends App {
   println(popSizes.sorted)
   println(NmaxPopsInis.sorted)
 
-/*
+
   val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
   val managementSeveralEvolution = ManagementSeveralEvolution(tau=tau,proportionMowing = p)
   val plantGrowth = PlantGrowth()
   val managementTechnique = ManagementTechnique.Alea
 
 
-    RunCalibration.evolutionWriteABC(popSizes)( dir1, dir2)(NmaxPopsInis, parameter.compteurMax, parameter.Nmax)(
+    RunCalibration.evolutionWriteABC(popSizes)( dir1, dir2)(NmaxPopsInis, 3, parameter.Nmax)(
       managementPopIni,managementSeveralEvolution,plantGrowth,managementTechnique)(rng)
 
-*/
+
+
   }
 
 

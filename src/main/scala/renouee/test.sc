@@ -24,7 +24,13 @@ b(4)
 
 math.floor(5.5)
 
-List.fill(10)(3)
+(List.fill(5)("stand")zipWithIndex).map(s => s._1+"_"+(s._2 +1)).mkString(",")
+//val l = (List.fill(5)(2)zipWithIndex ).map(p => p._1)
+
+
+
+
+
 
 
 

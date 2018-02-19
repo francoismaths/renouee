@@ -10,7 +10,7 @@ case class ManagementSeveralEvolution(T: Double = parameter.T, tau: Seq[Double],
 
 object Run {
 
-  implicit val rnd = new scala.util.Random(7)
+  //implicit val rnd = new scala.util.Random(7)
 
   ////////////////////////////    simu      //////////////////////
   ////////////////  Chose NO HISTORY (last), or HISTORY (all)   //////////////////////

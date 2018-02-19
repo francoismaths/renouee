@@ -97,13 +97,36 @@ object test_Main extends App {
 
   ///////////////  test NmaxPopIni pour                ////////////////
 
+  /*
   val initialPopSize = 1000
-  val res = createInitialPop.createPopIni2(initialPopSize ,math.round(2*initialPopSize/0.005).toInt,2,Management(),PlantGrowth())
+  val res = createInitialPop.createPopIni(initialPopSize ,math.round(2*initialPopSize/0.005).toInt,2,Management(),PlantGrowth())
 
   println(res.plants.length)
+*/
 
 /*
   val res = createInitialPop.createPopIni(1000,50000,2,Management(),PlantGrowth())
   println(res.plants.length)
 */
+
+  ///////////////  test NmaxPopIni avec la nouvelle fonction               ////////////////
+  //  but : faire dépendre le nombre d'iter de la taille de la pop que l'on souhaite créer.
+
+
+  val proportionMowingForSeq = 0.8
+
+  lazy val p = slaveArgumentsFiles.fileToSeq("data_allegee/p_allegee").map(p=> if(p==1)(1) else(proportionMowingForSeq))
+  lazy val tau = slaveArgumentsFiles.fileToSeq("data_allegee/tau_allegee")
+  lazy val popSizes = slaveArgumentsFiles.fileToSeq("data_allegee/taillePop2008_allegee")
+
+
+  val NmaxPopsInis = popSizes.map(s => (2*s / 0.005).toInt)
+
+  val res = createInitialPop.createSeveralInitialPop(popSizes)(NmaxPopsInis,3,Management(),PlantGrowth())
+
+
+  println(popSizes)
+  println(res.map(p=>p.plants.length))
+
+
 }
