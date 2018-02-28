@@ -38,7 +38,7 @@ object RunCalibration {
  final pop size to calculate density (easy to do if we have the list of positions).
   */
 
-  def resultEvolutionABC(initialPopSizes: Seq[Double])(NmaxPopsInis : Seq[Int] , compteurMax : Int = parameter.compteurMax, NmaxEvol : Int = parameter.Nmax ,
+  def resultEvolutionABC(initialPopSizes: Seq[Double])(NmaxPopsInis : Seq[Int] , compteurMax : Int = parameter.compteurMax, NmaxEvol : Int = parameter.Nmax , taillePopFinaleMaxVect : Seq[Int],
                                                        managementInitialPops: Management,
                                                        managementSeveralEvolution: ManagementSeveralEvolution,
                                                        plantGrowth: PlantGrowth, managementTechnique: ManagementTechnique)
@@ -46,7 +46,7 @@ object RunCalibration {
     // recall that the creation of all initial pop is done with the same mowing param (not the same during the evolution)
     val temp_initial_pop =  createInitialPop.createSeveralInitialPop(initialPopSizes)(NmaxPopsInis, compteurMax,managementInitialPops,plantGrowth )(random)
 
-    val final_pop = Run.severalFinalPop(temp_initial_pop)(NmaxEvol,managementSeveralEvolution,plantGrowth,managementTechnique)(random)
+    val final_pop = Run.severalFinalPop(temp_initial_pop)(NmaxEvol,taillePopFinaleMaxVect, managementSeveralEvolution,plantGrowth,managementTechnique)(random)
 
     ResultCalibrateABC(temp_initial_pop.map(p => p.plants) , final_pop.map(p => p.plants) , temp_initial_pop.map(p => p.plants.length) , final_pop.map(p => p.plants.length))
   }
@@ -64,13 +64,13 @@ object RunCalibration {
   Remark : we don't use the Seq[Int] of the class ResultCalibrateABC (R does it also)
   */
 
-  def evolutionWriteABC(initialPopSizes: Seq[Double])(file1 : java.io.File, file2 : java.io.File)(NmaxPopsInis : Seq[Int] , compteurMax : Int = parameter.compteurMax, NmaxEvol : Int = parameter.Nmax)(
+  def evolutionWriteABC(initialPopSizes: Seq[Double])(file1 : java.io.File, file2 : java.io.File)(NmaxPopsInis : Seq[Int] , compteurMax : Int = parameter.compteurMax, NmaxEvol : Int = parameter.Nmax, taillePopFinaleMaxVect : Seq[Int])(
     managementInitialPops: Management,
                          managementSeveralEvolution: ManagementSeveralEvolution,
                          plantGrowth: PlantGrowth, managementTechnique: ManagementTechnique)
                          (implicit random: Random) = {
 
-    val res = resultEvolutionABC(initialPopSizes)(NmaxPopsInis,compteurMax,NmaxEvol,managementInitialPops,managementSeveralEvolution,plantGrowth,managementTechnique)(random)
+    val res = resultEvolutionABC(initialPopSizes)(NmaxPopsInis,compteurMax,NmaxEvol, taillePopFinaleMaxVect, managementInitialPops,managementSeveralEvolution,plantGrowth,managementTechnique)(random)
     // record positions of initial population (2008)
     slaveArgumentsFiles.createFilesPositionsABC(res.popinis, file1 , "pos_popIni_")
 

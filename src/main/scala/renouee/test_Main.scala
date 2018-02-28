@@ -1,5 +1,7 @@
 package renouee
 
+import java.io.{BufferedReader, FileReader}
+
 import better.files.File
 import org.apache.commons.math3.random.{RandomAdaptor, Well44497b}
 
@@ -112,7 +114,7 @@ object test_Main extends App {
   ///////////////  test NmaxPopIni avec la nouvelle fonction               ////////////////
   //  but : faire dépendre le nombre d'iter de la taille de la pop que l'on souhaite créer.
 
-
+/*
   val proportionMowingForSeq = 0.8
 
   lazy val p = slaveArgumentsFiles.fileToSeq("data_allegee/p_allegee").map(p=> if(p==1)(1) else(proportionMowingForSeq))
@@ -127,6 +129,49 @@ object test_Main extends App {
 
   println(popSizes)
   println(res.map(p=>p.plants.length))
+*/
+
+
+  ////////////////////////////////////////
+  // IMPORTER LES DONNER DE CALIBRATION DE R
+
+  //val test= slaveArgumentsFiles.fileToSeq("data_allegee/taillePop2015_allegee").map(t => (5*t).toInt) : Seq[Int]
+
+  import better.files._
+
+  val nameFile : String = "resCalibrate/resParam_"
+  val numeroFile : Int = 1
+  val r = File( nameFile + numeroFile.toString + ".csv")
+  val lines = r.lines.toVector
+
+  def doubleQuoteFilter(c: Char) = c != '"'
+
+  //val tempNames = lines(1).filter(doubleQuoteFilter).split(",").toList   //.map(_.toDouble)
+
+  val tempNames = lines.map(p => p.split(",").toList(0) )
+  val tempVal = lines.map(p => p.split(",").toList(1).toDouble )
+
+  //println(lines.map(p => p.split(",").toList(0)   ) )
+  println(tempVal)
+  println(tempNames)
+
+  val plantGrowth = PlantGrowth(
+    K = tempVal(0),
+    L = tempVal(1),
+    distanceCompetition = tempVal(2),
+    distanceParent = tempVal(3),
+    shape = tempVal(4),
+    scale = tempVal(5),
+    deathParameterDecrease = tempVal(6),
+    deathParameterScaling = tempVal(7),
+    mowingParameter = tempVal(8),
+    bbar = tempVal(9),
+    a0 = tempVal(10),
+  )
+
+
+
+
 
 
 }
