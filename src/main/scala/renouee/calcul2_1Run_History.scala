@@ -19,7 +19,7 @@ object calcul2_1Run_History extends App {
   - a file with the history (time, popsize, area(scala, rectangle), event)
   */
 
-  val rng = new RandomAdaptor(new Well44497b(3))
+  val rng = new RandomAdaptor(new Well44497b(4))
 
   val initialPopulationSize = 2000
 
@@ -48,7 +48,7 @@ object calcul2_1Run_History extends App {
   */
 
   //////////////////////////////////////////////////////
-  //////////        WITH A FILE          ////////////
+  ////////     WITH A FILE  (eg from openmole via R    /////////
   ////////////////////////////////////////////////////
 
   // if we want to  use a file for the value of the paameter (plantGrowth), for example the result of nsga caliration openmole
@@ -92,7 +92,7 @@ object calcul2_1Run_History extends App {
   ///////////////////////////////////////////////////
 
 
-  val managementTechnique = ManagementTechnique.SideXPosition
+  val managementTechnique = ManagementTechnique.Periphery
 
   val initialPopulation = createInitialPop.createPopIni(initialPopulationSize,NmaxPopIni ,compteurMax,
     managementPopIni,plantGrowth)(rng) : PlantEvolution

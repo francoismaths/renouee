@@ -43,10 +43,12 @@ object createInitialPop {
     val pop0 = PlantEvolution(Seq(Plant(0.0,0.0, plantGrowth.biomassFirstIndiv)).toVector , Vector(InfosEvolution(0,0,0.0,""))  ) : PlantEvolution
     val res = slaveSimuInitialPopEvolution(pop0,0,NmaxPopIni, initialPopSize, management,plantGrowth)(random)
 
+    /*
     //  en modifiant avec Lens
     val timeToModify = PlantEvolution.infosEvolution  composeTraversal Each.each composeLens InfosEvolution.time
     val allBiomases = PlantEvolution.plants composeTraversal Each.each composeLens Plant.biomass
     //timeToModify.modify(0.0)(res) : PlantEvolution
+    */
 
     PlantEvolution(res.plants,Vector(InfosEvolution(popSize = res.plants.length,
       area = fieldutil.area(res.plants.map(p => p.x),res.plants.map(p => p.y) ))))
@@ -54,47 +56,7 @@ object createInitialPop {
   }
 
 
-  //////////////////////////////
-  //////////////  Always initial pop, with evolution   //////////////
-  //////////////  no time,  with compteurMax (to avoid the pop created is Nil cause of bad luck (death))
-  /////////     just require a pop size to reach (if no success, cause of parameters for example)
-  ////////////  it returns Nil : PlantEvolution (there are mow, birth, death)
-  ///////////////////////////////
 
-  /*
-  def slaveCreatePopIni(initialPopSize : Double = Plant.initialPopulationSize, NmaxPopIni : Int,
-                        compteur : Int = 1, compteurMax : Int = parameter.compteurMax,
-                        management: Management,
-                        plantGrowth: PlantGrowth  )(implicit random: Random) : PlantEvolution = {
-
-    if (compteur > compteurMax)   PlantEvolution(Nil.toVector,Nil.toVector)
-    else {
-
-      val temp  = createInitialPop.createInitialPopEvolution(initialPopSize, NmaxPopIni, management, plantGrowth )(random)
-
-      if (temp.plants.length == initialPopSize) {
-        temp
-      }
-
-      else {
-        slaveCreatePopIni(initialPopSize, NmaxPopIni,
-          compteur+1, compteurMax, management, plantGrowth)(random)
-      }
-    }
-  }
-
-
-
-    //  Function without the iter
-  def createPopIni(initialPopSize : Double = Plant.initialPopulationSize, NmaxPopIni : Int, compteurMax : Int = parameter.compteurMax,
-                   management: Management,
-                   plantGrowth: PlantGrowth  )(implicit random: Random)  : PlantEvolution = {
-
-    slaveCreatePopIni(initialPopSize, NmaxPopIni, 1, compteurMax, management, plantGrowth)(random)
-  }
-
-
-*/
 
 
 

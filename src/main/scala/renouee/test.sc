@@ -29,11 +29,11 @@ math.floor(5.5)
 
 
 
-
+List.fill(5)(7)
 
 //math.abs( z._1 - z._2)/z._1
 
-math.abs( 12 - 4)/3.toDouble
+//math.abs( 12 - 4)/3.toDouble
 
 
 

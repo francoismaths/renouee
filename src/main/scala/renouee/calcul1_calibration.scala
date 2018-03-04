@@ -75,7 +75,7 @@ object calcul1_calibration extends App {
 
   // if we want to  use a file for the value of the paameter (plantGrowth), for example the result of nsga caliration openmole
 
-  val nameFile : String = "ParamMin"
+  val nameFile : String = "ParamMin2"
   val r = File( nameFile  + ".csv")
   val lines = r.lines.toVector
 
