@@ -27,9 +27,10 @@ math.floor(5.5)
 (List.fill(5)("stand")zipWithIndex).map(s => s._1+"_"+(s._2 +1)).mkString(",")
 //val l = (List.fill(5)(2)zipWithIndex ).map(p => p._1)
 
+Seq(1,5,7)(1)
 
 
-List.fill(5)(7)
+List.fill(5)(7).map(p => math.floor(p/2.5))
 
 //math.abs( z._1 - z._2)/z._1
 

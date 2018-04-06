@@ -46,7 +46,7 @@ object Evolution {
 
   ///////////////////////////////////////////////////////////////////
   ///////////   Next for the evolution, all the arguments (for a calibration)   /////////////////
-  /////////// Chose to keep all (history : time,event,size) OR last (population) /////////////////
+  /////////// Chose to keep all (history : time,event,size) OR last (population) : resultType      /////////////////
   /////////// Chose the management technique : alea, periphery, side  /////////////////
   /////////////////////////////////////////////////////////////////
 

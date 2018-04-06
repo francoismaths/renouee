@@ -17,19 +17,20 @@ object calcul2_1Run_History extends App {
   - a file with the initial pop (biomass and position)
   - a file with the final pop (biomass and position)
   - a file with the history (time, popsize, area(scala, rectangle), event)
+  - a file with the FULL history (not clear event, even when 'nothing' happens, ie the eventnot happens cause of alea)
   */
 
-  val rng = new RandomAdaptor(new Well44497b(4))
+  val rng = new RandomAdaptor(new Well44497b(3))
 
-  val initialPopulationSize = 2000
+  val initialPopulationSize = 50
 
 
   val NmaxPopIni = (2/0.005 * initialPopulationSize).toInt
-  val NmaxEvol= 1000000
+  val NmaxEvol= 2000000
   val compteurMax = 3
 
   val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
-  val management = Management(T=10, tau = 5, proportionMowing = 0.8)
+  val management = Management(T=3000, tau = 0.0, proportionMowing = 0.9)
 
   /*
   val plantGrowth = PlantGrowth(
@@ -92,15 +93,18 @@ object calcul2_1Run_History extends App {
   ///////////////////////////////////////////////////
 
 
-  val managementTechnique = ManagementTechnique.Periphery
+  val managementTechnique = ManagementTechnique.Alea
+
 
   val initialPopulation = createInitialPop.createPopIni(initialPopulationSize,NmaxPopIni ,compteurMax,
     managementPopIni,plantGrowth)(rng) : PlantEvolution
-  val taillePopFinaleMax = 20000 : Int
+  val taillePopFinaleMax = 2000 : Int
+
+
+  println(initialPopulation.infosEvolution)
 
 
   val res = Run.simu(initialPopulation,NmaxEvol, taillePopFinaleMax, management,plantGrowth,ResultType.All,managementTechnique)(rng)
-
 
   lazy val name_Dir1 = "1run"
   lazy val dir1 = new java.io.File(name_Dir1)
@@ -108,5 +112,17 @@ object calcul2_1Run_History extends App {
 
   createfileforR.writeResultSingleExperiment(initialPopulation,res,dir1,plantGrowth,management, managementTechnique )
 
+  println(res.infosEvolution.last.popSize)
+  println(res.infosEvolution.map(p => if(p.event == "Nobirth"){1}else{0}).sum)
 
+
+
+
+  /*
+  val res = RunCalibration.resultEvolutionABC(List.fill(3)(1))(List.fill(3)(NmaxPopIni) , compteurMax, NmaxEvol, List.fill(3)(NmaxEvol), managementPopIni,
+  ManagementSeveralEvolution(5000,List.fill(3)(0.0),List.fill(3)(0.9)), plantGrowth,  managementTechnique)(rng)
+
+  println(res.popsSizeIni)
+  println(res.popsSizeT)
+*/
 }

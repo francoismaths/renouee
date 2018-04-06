@@ -4,6 +4,10 @@ import better.files.File
 
 object calcul3_comparaison_Mowing_Technique extends App {
 
+  /*
+  Il n'y a pas d'évolution, c'est ça la différence avec calcul 4
+   */
+
   implicit val rng = random(2)
 
   val popIni = createInitialPop.createInitialPopEvolution(1000,parameter.Nmax, Management(proportionMowing = 0.9, tau = 1.0 ),PlantGrowth())
@@ -20,20 +24,11 @@ object calcul3_comparaison_Mowing_Technique extends App {
 
   ////////////////////////
 
-  val f = File("popIni.txt")
-  createfileforR.writeFinalPop(f,popIni)
+  lazy val name_Dir1 = "resultFilesComparaisonMowingTechnique_NoEvol"
+  lazy val dir1 = new java.io.File(name_Dir1)
+  dir1.mkdir()
 
-  val g= File("resAlea.txt")
-  createfileforR.writeFinalPop(g,resAlea)
-
-  val h = File("resPeryphery.txt")
-  createfileforR.writeFinalPop(h,resPeryphery)
-
-  val i= File("resSide.txt")
-  createfileforR.writeFinalPop(i,resSide)
-
-  val j= File("resSideXPosition.txt")
-  createfileforR.writeFinalPop(j,resSideXPosition)
+  createfileforR.writeResultComparaisonTechnique(dir1,popIni,resAlea,resPeryphery,resSide,resSideXPosition)
 
 
 

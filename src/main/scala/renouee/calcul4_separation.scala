@@ -1,44 +1,92 @@
 package renouee
 
 import better.files.File
+import org.apache.commons.math3.random.{RandomAdaptor, Well44497b}
 
 object calcul4_separation extends App {
 
-  implicit val rng = random(2)
 
+  val rng = new RandomAdaptor(new Well44497b(4))
+
+  val initialPopulationSize = 1500
+
+
+  val NmaxPopIni = (2/0.005 * initialPopulationSize).toInt
+  val NmaxEvol= 1000000
+  val compteurMax = 3
   val taillePopFinaleMax = 8000 : Int
 
-  val popIni = createInitialPop.createInitialPopEvolution(1000, parameter.Nmax, Management(proportionMowing = 0.9, tau = 1.0 ),PlantGrowth())
-
-  //val resAlea = ManagementTechniqueUtil.mowingAlea(popIni,Management(proportionMowing = 0.7),PlantGrowth(),ResultType.Last,1)
-
-  val resEvolAleaT = Run.simu(popIni,parameter.Nmax, taillePopFinaleMax, Management(tau = 3,T = 8.0),PlantGrowth(),ResultType.Last,ManagementTechnique.Alea)
+  val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
 
 
-  val resEvolPerypheryT = Run.simu(popIni,parameter.Nmax, taillePopFinaleMax, Management(tau = 3,proportionMowing = 0.8),PlantGrowth(),ResultType.Last,ManagementTechnique.Periphery)
+  //////////////////////////////////////////////////////
+  ////////   Plant param  WITH A FILE  (eg from openmole via R)    /////////
+  ////////////////////////////////////////////////////
 
-  val resEvolSideT = Run.simu(popIni,parameter.Nmax, taillePopFinaleMax, Management(tau = 3,proportionMowing = 0.8),PlantGrowth(),ResultType.Last,ManagementTechnique.Side)
+  val nameFile : String = "ParamMin"
+  val r = File( nameFile  + ".csv")
+  val lines = r.lines.toVector
 
-  val resEvolSideXPositionT = Run.simu(popIni,parameter.Nmax, taillePopFinaleMax, Management(tau = 3,xAxisMowLimit = 0),PlantGrowth(),ResultType.Last,ManagementTechnique.SideXPosition)
+  def doubleQuoteFilter(c: Char) = c != '"'
 
-  //println(resEvolSideXPositionT)
+  val tempNames = lines.map(p => p.split(",").toList(0) )
+  val tempVal = lines.map(p => p.split(",").toList(1).toDouble )
+  println(tempVal)
+  println(tempNames)
+
+
+  val plantGrowth = PlantGrowth(
+    K = tempVal(0),
+    L = tempVal(1),
+    distanceCompetition = tempVal(2),
+    distanceParent = tempVal(3),
+    shape = tempVal(4),
+    scale = tempVal(5),
+    deathParameterDecrease = tempVal(6),
+    deathParameterScaling = tempVal(7),
+    mowingParameter = tempVal(8),
+    bbar = tempVal(9),
+    a0 = tempVal(10),
+  )
+
+  ///////////////////////////////////////////////////
+
+  val popIni = createInitialPop.createPopIni(initialPopulationSize,NmaxPopIni ,compteurMax,
+    managementPopIni,plantGrowth)(rng) : PlantEvolution
+
+  ///////////////////////////////////////////////////
+  ///////     Parameter Management            ///////
+  ///////////////////////////////////////////////////
+
+  val tau = 7.0 : Double
+  val T = 5.0 : Double
+  val  proportionMowing = 0.8 : Double
+  val xAxisMowLimit = 0
+
+  val management = Management(T = T,proportionMowing = proportionMowing,tau = tau, xAxisMowLimit = xAxisMowLimit )
+
+  ///////////////////////////////////////////////////
+  // EVOLUTION
+
+  val resEvolAleaT = Run.simu(popIni,NmaxEvol, taillePopFinaleMax, management , plantGrowth,ResultType.Last,ManagementTechnique.Alea)(rng)
+
+  val resEvolPerypheryT = Run.simu(popIni,NmaxEvol, taillePopFinaleMax, management, plantGrowth,ResultType.Last,ManagementTechnique.Periphery)(rng)
+
+  val resEvolSideT = Run.simu(popIni,NmaxEvol, taillePopFinaleMax, management, plantGrowth,ResultType.Last,ManagementTechnique.Side)(rng)
+
+  val resEvolSideXPositionT = Run.simu(popIni,NmaxEvol, taillePopFinaleMax, management, plantGrowth,ResultType.Last,ManagementTechnique.SideXPosition)(rng)
+
 
   ////////////////////////
+  // Write in Files
 
-  val f = File("popIni.txt")
-  createfileforR.writeFinalPop(f,popIni)
-
-  val g= File("resEvolAlea.txt")
-  createfileforR.writeFinalPop(g,resEvolAleaT)
+  lazy val name_Dir1 = "resultFilesComparaisonMowingTechnique_Evol"
+  lazy val dir1 = new java.io.File(name_Dir1)
+  dir1.mkdir()
 
 
-  val h = File("resEvolPeryphery.txt")
-  createfileforR.writeFinalPop(h,resEvolPerypheryT)
+  createfileforR.writeResultComparaisonTechniqueEvol(dir1,popIni, resEvolAleaT, resEvolPerypheryT, resEvolSideT, resEvolSideXPositionT,
+    plantGrowth, management)
 
-  val i= File("resEvolSide.txt")
-  createfileforR.writeFinalPop(i,resEvolSideT)
-
-  val j= File("resEvolSideXPosition.txt")
-  createfileforR.writeFinalPop(j, resEvolSideXPositionT)
 
 }

@@ -48,9 +48,11 @@ case class Management( T: Double = 8.0,
 
 object Plant {
 
+  /*
   def a_0(K: Double) = {
     K / 10
   }
+  */
 
   def mowing(mowingParameter: Double)(a: Double) = 1 - math.exp(-mowingParameter * a)
   // effect of the mowing on the biomass of the plant

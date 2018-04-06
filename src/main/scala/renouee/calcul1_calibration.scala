@@ -4,7 +4,7 @@ import better.files.File
 import org.apache.commons.math3.random.{RandomAdaptor, Well44497b}
 
 /* AIM : Evolution of the model for several population, given initial pop size (creation and evolution),
-according to mowing parameter for each population (here in vectors).
+according to mowing parameter (technique) for each population (here in vectors).
 Creation of directories to record positions (for R analysis).
 
 */
@@ -14,11 +14,39 @@ object calcul1_calibration extends App {
 
   val proportionMowingForSeq = 0.9
 
-  lazy val p = slaveArgumentsFiles.fileToSeq("data_allegee/p_allegee").map(p=> if(p==1)(1) else(proportionMowingForSeq))
-  lazy val tau = slaveArgumentsFiles.fileToSeq("data_allegee/tau_allegee")
+  // read file for the argument of the function
+
+  lazy val proportionMowing = slaveArgumentsFiles.fileToSeq("data_allegee/p_allegee").map(p=> if(p==1)(1) else(proportionMowingForSeq))
+  lazy val tauSeq = slaveArgumentsFiles.fileToSeq("data_allegee/tau_allegee")
   lazy val popSizes = slaveArgumentsFiles.fileToSeq("data_allegee/taillePop2008_allegee")
 
-  val id = 2 : Long
+
+
+  /*
+  // If we prefer enter this information manually (no need of file)
+  // for example repetition of the same experience (one population) with param Min
+
+  val numberOfPops = 3 : Int
+  val tau = 5
+  val popSize = 500
+
+  lazy val proportionMowing = List.fill(numberOfPops)(proportionMowingForSeq)
+  lazy val tauSeq = List.fill(numberOfPops)(tau)
+  lazy val popSizes = List.fill(numberOfPops)(popSize)
+  lazy val taillePopFinaleMaxVect =  List.fill(numberOfPops)(popSize*10)
+  */
+
+  /*
+  //  Pour tester rapidement
+  lazy val p = Seq(1,0,0,1,0,1,1).map(p=> if(p==1)(1) else(proportionMowingForSeq))  // because the file just says if fullMow or not
+  lazy val tau = Seq(3,0,1,2,1,1,3).map(_.toDouble)
+  lazy val popSizes = Seq(3.0,10.0,18.0,35.0,10.0,10.0,40.0)
+*/
+
+
+
+
+  val id = 2 : Int
   val rng = new RandomAdaptor(new Well44497b(id))
 
 
@@ -34,13 +62,6 @@ object calcul1_calibration extends App {
 
 
 
-  /*
-  //  Pour tester rapidement
-  lazy val p = Seq(1,0,0,1,0,1,1).map(p=> if(p==1)(1) else(proportionMowingForSeq))  // because the file just says if fullMow or not
-  lazy val tau = Seq(3,0,1,2,1,1,3).map(_.toDouble)
-  lazy val popSizes = Seq(3.0,10.0,18.0,35.0,10.0,10.0,40.0)
-*/
-
   val NmaxPopsInis = popSizes.map(s => (2*s / 0.005).toInt)
 
   lazy val taillePopFinaleMaxVect = (slaveArgumentsFiles.fileToSeq("data_allegee/taillePop2008_allegee") zip  slaveArgumentsFiles.fileToSeq("data_allegee/taillePop2015_allegee") ).map(t => math.max(10*t._1,10*t._2).toInt) : Seq[Int]
@@ -51,8 +72,14 @@ object calcul1_calibration extends App {
 
 
   val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
-  val managementSeveralEvolution = ManagementSeveralEvolution(tau=tau,proportionMowing = p)
-/*
+  val managementSeveralEvolution = ManagementSeveralEvolution(tau=tauSeq,proportionMowing = proportionMowing)
+
+
+  //////////////////////////////////////////////////////
+  //////////   Enter the parameter of the plant manually  ////////////
+  ////////////////////////////////////////////////////
+
+  /*
   val plantGrowth = PlantGrowth(
     distanceCompetition = 0.2476456      ,
     distanceParent = 0.3861672 ,
@@ -75,7 +102,7 @@ object calcul1_calibration extends App {
 
   // if we want to  use a file for the value of the paameter (plantGrowth), for example the result of nsga caliration openmole
 
-  val nameFile : String = "ParamMin2"
+  val nameFile : String = "ParamMin"
   val r = File( nameFile  + ".csv")
   val lines = r.lines.toVector
 
@@ -103,13 +130,13 @@ object calcul1_calibration extends App {
   )
 
   ///////////////////////////////////////////////////
-  val managementTechnique = ManagementTechnique.Alea
 
+  // function that creates and makes evolve initial pops, and creates file
+
+  val managementTechnique = ManagementTechnique.Alea
 
     RunCalibration.evolutionWriteABC(popSizes)( dir1, dir2)(NmaxPopsInis, 3, parameter.Nmax,taillePopFinaleMaxVect  )(
       managementPopIni,managementSeveralEvolution,plantGrowth,managementTechnique)(rng)
-
-
 
   }
 
