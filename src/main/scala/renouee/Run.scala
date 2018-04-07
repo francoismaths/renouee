@@ -5,7 +5,7 @@ import org.apache.commons.math3.distribution.UniformRealDistribution
 import scala.annotation.tailrec
 import scala.util.Random
 
-case class ManagementSeveralEvolution(T: Double = parameter.T, tau: Seq[Double], proportionMowing: Seq[Double])
+case class ManagementSeveralEvolution(T: Double = parameter.T, tau: Seq[Double], proportionMowing: Seq[Double], xAxisMowLimit: Seq[Double] = Nil)
 
 
 object Run {
@@ -62,7 +62,8 @@ object Run {
       val temp = initialPops.head // The initial pop that will evolve during this iteration
       val tempres = Run.simu(temp, NmaxEvol, taillePopFinaleMaxVect.head, Management(T = managementSeveralEvolution.T,
         tau = managementSeveralEvolution.tau(managementSeveralEvolution.tau.length - initialPops.length),
-        proportionMowing = managementSeveralEvolution.proportionMowing(managementSeveralEvolution.tau.length - initialPops.length)),
+        proportionMowing = managementSeveralEvolution.proportionMowing(managementSeveralEvolution.tau.length - initialPops.length),
+        xAxisMowLimit = managementSeveralEvolution.xAxisMowLimit(managementSeveralEvolution.xAxisMowLimit.length - initialPops.length)),
         plantGrowth, ResultType.Last, managementTechnique)(random)
 
       slaveSeveralFinalPop(initialPops.tail)(NmaxEvol, taillePopFinaleMaxVect.tail , managementSeveralEvolution, plantGrowth, managementTechnique, res :+ tempres)(random)

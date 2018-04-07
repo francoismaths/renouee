@@ -37,4 +37,8 @@ List.fill(5)(7).map(p => math.floor(p/2.5))
 //math.abs( 12 - 4)/3.toDouble
 
 
+val prop : Double = 0.66
+val ttemp = (Seq(1,5,3,7,2,18,13,15,4,8).sorted)
+ttemp(7)
+
 

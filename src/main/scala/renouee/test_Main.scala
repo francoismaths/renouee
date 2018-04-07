@@ -136,7 +136,7 @@ object test_Main extends App {
   // IMPORTER LES DONNER DE CALIBRATION DE R
 
   //val test= slaveArgumentsFiles.fileToSeq("data_allegee/taillePop2015_allegee").map(t => (5*t).toInt) : Seq[Int]
-
+/*
   import better.files._
 
   val nameFile : String = "resCalibrate/resParam_"
@@ -169,9 +169,68 @@ object test_Main extends App {
     a0 = tempVal(10),
   )
 
+*/
 
 
 
 
+
+  // teste de Side dans la calibration
+
+  val initialPopulationSize = 30
+
+
+  val NmaxPopIni = (2/0.005 * initialPopulationSize).toInt
+  val NmaxEvol= 2000000
+  val compteurMax = 3
+
+  val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
+
+
+  val nameFile : String = "ParamMin"
+  val r = File( nameFile  + ".csv")
+  val lines = r.lines.toVector
+  def doubleQuoteFilter(c: Char) = c != '"'
+
+  val tempNames = lines.map(p => p.split(",").toList(0) )
+  val tempVal = lines.map(p => p.split(",").toList(1).toDouble )
+  println(tempVal)
+  println(tempNames)
+
+
+  val plantGrowth = PlantGrowth(
+    K = tempVal(0),
+    L = tempVal(1),
+    distanceCompetition = tempVal(2),
+    distanceParent = tempVal(3),
+    shape = tempVal(4),
+    scale = tempVal(5),
+    deathParameterDecrease = tempVal(6),
+    deathParameterScaling = tempVal(7),
+    mowingParameter = tempVal(8),
+    bbar = tempVal(9),
+    a0 = tempVal(10),
+  )
+
+  /*
+  val initialPopulation = createInitialPop.createPopIni(initialPopulationSize,NmaxPopIni ,compteurMax,
+    managementPopIni,plantGrowth)(rng) : PlantEvolution
+
+
+  println(initialPopulation.plants.length)
+  println(initialPopulation.plants.map(p => p.x).sorted)
+
+  val res = renouee.RunCalibrationSide.findXLimitPositionToMow(initialPopulation,0.65)
+  println(res)
+*/
+
+  val temp_initial_pop =  createInitialPop.createSeveralInitialPop(Seq(5,3))(Seq(200,200), compteurMax, managementPopIni, plantGrowth )(rng)
+
+  println( temp_initial_pop(0).plants.map(p => p.x).sorted )
+  println( temp_initial_pop(1).plants.map(p => p.x).sorted )
+
+  val proportionMowing = Seq(0.6,1)
+  val SeqxAxisMowLimit = (temp_initial_pop zip proportionMowing).map(p => renouee.RunCalibrationSide.findXLimitPositionToMow(p._1,p._2))
+  println(SeqxAxisMowLimit)
 
 }
