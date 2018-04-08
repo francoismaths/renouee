@@ -50,7 +50,8 @@ object RunCalibrationSide {
       // trie les x par ordre croissant
     val temp = (initialPop.plants.map(p=>p.x)).sorted
     // sélectionne le bon
-    temp(math.floor((1-proportionMowing)*(temp.length)).toInt)
+    if (temp.length > 0){
+    temp(math.max(math.floor((1-proportionMowing)*(temp.length)).toInt -1,0)) } else {0}
   }
 
 
@@ -67,7 +68,7 @@ object RunCalibrationSide {
 
     val SeqxAxisMowLimit = (temp_initial_pop zip proportionMowing).map(p =>findXLimitPositionToMow(p._1,p._2))
 
-    val final_pop = Run.severalFinalPop(temp_initial_pop)(NmaxEvol,taillePopFinaleMaxVect, ManagementSeveralEvolution(T,tau, proportionMowing, SeqxAxisMowLimit),plantGrowth,ManagementTechnique.SideXPosition)(random)
+    val final_pop = Run.severalFinalPop(temp_initial_pop)(NmaxEvol,taillePopFinaleMaxVect, ManagementSeveralEvolution(T = T,tau = tau, proportionMowing = proportionMowing, xAxisMowLimit = SeqxAxisMowLimit), plantGrowth,ManagementTechnique.SideXPosition)(random)
 
     ResultCalibrateSide(temp_initial_pop.map(p => p.plants) , final_pop.map(p => p.plants) , temp_initial_pop.map(p => p.plants.length) , final_pop.map(p => p.plants.length))
   }

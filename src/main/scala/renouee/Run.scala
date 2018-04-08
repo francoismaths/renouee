@@ -5,7 +5,7 @@ import org.apache.commons.math3.distribution.UniformRealDistribution
 import scala.annotation.tailrec
 import scala.util.Random
 
-case class ManagementSeveralEvolution(T: Double = parameter.T, tau: Seq[Double], proportionMowing: Seq[Double], xAxisMowLimit: Seq[Double] = Nil)
+case class ManagementSeveralEvolution(T: Double = parameter.T, tau: Seq[Double], proportionMowing: Seq[Double], xAxisMowLimit: Seq[Double] )
 
 
 object Run {

@@ -177,6 +177,7 @@ object test_Main extends App {
 
   // teste de Side dans la calibration
 
+  /*
   val initialPopulationSize = 30
 
 
@@ -211,6 +212,7 @@ object test_Main extends App {
     bbar = tempVal(9),
     a0 = tempVal(10),
   )
+  */
 
   /*
   val initialPopulation = createInitialPop.createPopIni(initialPopulationSize,NmaxPopIni ,compteurMax,
@@ -222,7 +224,7 @@ object test_Main extends App {
 
   val res = renouee.RunCalibrationSide.findXLimitPositionToMow(initialPopulation,0.65)
   println(res)
-*/
+
 
   val temp_initial_pop =  createInitialPop.createSeveralInitialPop(Seq(5,3))(Seq(200,200), compteurMax, managementPopIni, plantGrowth )(rng)
 
@@ -232,5 +234,122 @@ object test_Main extends App {
   val proportionMowing = Seq(0.6,1)
   val SeqxAxisMowLimit = (temp_initial_pop zip proportionMowing).map(p => renouee.RunCalibrationSide.findXLimitPositionToMow(p._1,p._2))
   println(SeqxAxisMowLimit)
+  */
+
+
+
+
+
+
+
+
+  // test side 2
+
+  val proportionMowingForSeq = 0.9
+  val numberOfPops = 3 : Int
+
+
+  //  Pour tester rapidement
+  lazy val p = Seq(1,0,0.5)
+  lazy val tau = Seq(3,0,1).map(_.toDouble)
+  lazy val popSizes = Seq(3.0,10.0,18.0)
+
+
+  lazy val path_Dir1 = "simu_aire2008"
+  lazy val path_Dir2 = "simu_aire2015"
+
+  lazy val dir1 = new java.io.File(path_Dir1)
+  lazy val dir2 = new java.io.File(path_Dir2)
+
+  dir1.mkdir()
+  dir2.mkdir()
+
+
+  val NmaxPopsInis = popSizes.map(s => (2*s / 0.005).toInt)
+
+  lazy val taillePopFinaleMaxVect = List.fill(numberOfPops)(2000)
+
+  println(popSizes.sorted)
+  println(NmaxPopsInis.sorted)
+
+
+  val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
+
+
+  //////////////////////////////////////////////////////
+  //////////   Enter the parameter of the plant
+  ////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////
+  //////////   WITH A FILE (param that make the min in the exploration)  ////////////
+  ////////////////////////////////////////////////////
+
+  // if we want to  use a file for the value of the paameter (plantGrowth), for example the result of nsga caliration openmole
+
+  val nameFile : String = "ParamMin"
+  val r = File( nameFile  + ".csv")
+  val lines = r.lines.toVector
+
+  def doubleQuoteFilter(c: Char) = c != '"'
+
+  val tempNames = lines.map(p => p.split(",").toList(0) )
+  val tempVal = lines.map(p => p.split(",").toList(1).toDouble )
+  println(tempVal)
+  println(tempNames)
+
+
+  val plantGrowth = PlantGrowth(
+    K = tempVal(0),
+    L = tempVal(1),
+    distanceCompetition = tempVal(2),
+    distanceParent = tempVal(3),
+    shape = tempVal(4),
+    scale = tempVal(5),
+    deathParameterDecrease = tempVal(6),
+    deathParameterScaling = tempVal(7),
+    mowingParameter = tempVal(8),
+    bbar = tempVal(9),
+    a0 = tempVal(10),
+    biomassFirstIndiv = tempVal(11)
+  )
+
+  ///////////////////////////////////////////////////
+
+  // function that creates and makes evolve initial pops, and creates files
+
+/*
+  val temp_initial_pop =  createInitialPop.createSeveralInitialPop(popSizes)(NmaxPopsInis, 5, managementPopIni, plantGrowth )(rng)
+
+  println( temp_initial_pop(0).plants.map(p => p.x).sorted )
+  println( temp_initial_pop(1).plants.map(p => p.x).sorted )
+
+
+  val SeqxAxisMowLimit = (temp_initial_pop zip p ).map(k =>RunCalibrationSide.findXLimitPositionToMow(k._1,k._2))
+  println(p)
+  println(SeqxAxisMowLimit)
+
+
+  val final_pop = Run.severalFinalPop(temp_initial_pop)(parameter.Nmax,taillePopFinaleMaxVect, ManagementSeveralEvolution(T = 8,tau = tau, proportionMowing = p, xAxisMowLimit = SeqxAxisMowLimit), plantGrowth,ManagementTechnique.SideXPosition)(rng)
+
+  println(tau)
+  println( final_pop(0).plants.length)
+  println( final_pop(1).plants.length)
+*/
+
+
+  /*
+  RunCalibrationSide.resultEvolutionABCSide(popSizes)(NmaxPopsInis, 3, parameter.Nmax,taillePopFinaleMaxVect,
+    managementPopIni,
+    8, tau, p,
+    plantGrowth)(rng)
+*/
+
+
+
+    renouee.RunCalibrationSide.evolutionWriteABCSide(popSizes)( dir1, dir2)(NmaxPopsInis, 3, parameter.Nmax,taillePopFinaleMaxVect  )(
+      managementPopIni,
+      8, tau, p,
+      plantGrowth)(rng)
+
 
 }
