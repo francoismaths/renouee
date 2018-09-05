@@ -72,7 +72,7 @@ object calcul1_calibration extends App {
 
 
   val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
-  val managementSeveralEvolution = ManagementSeveralEvolution(tau=tauSeq,proportionMowing = proportionMowing)
+  val managementSeveralEvolution = ManagementSeveralEvolution(tau=tauSeq,proportionMowing = proportionMowing, xAxisMowLimit = List.fill(tauSeq.length)(0.0))
 
 
   //////////////////////////////////////////////////////

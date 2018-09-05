@@ -16,11 +16,11 @@ object slaveArgumentsFiles {
 
   // to write final plants (position)
   def slaveWriteFinalPop(f : better.files.File, l : Seq[Plant], i:Int) = {
-    f.appendLine().append(List(l(i).x,l(i).y).mkString(","))
+    f.appendLine().append(List(l(i).x,l(i).y,l(i).biomass).mkString(","))
   }
 
   def writeFinalPop(f : better.files.File, l : Seq[Plant] ) = {
-    f.overwrite("xPos,yPos")
+    f.overwrite("xPos,yPos,biom")
     for ( i <- 0 to  l.length -1) slaveWriteFinalPop(f, l ,i)
   }
 
@@ -61,7 +61,6 @@ Unuseful, we can find the pop size thanks to the positions (file) of a pop
     val temp = ligne2.split(" ").toList.map(_.toDouble)
     temp
   }
-
 
 
 }

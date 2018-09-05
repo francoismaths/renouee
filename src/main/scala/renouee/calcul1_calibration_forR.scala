@@ -23,7 +23,7 @@ object calcul1_calibration_forR {
 
 
     val managementPopIni = Management(tau= 1.0, proportionMowing = 0.9)
-    val managementSeveralEvolution = ManagementSeveralEvolution(tau=tau,proportionMowing = p)
+    val managementSeveralEvolution = ManagementSeveralEvolution(tau=tau,proportionMowing = p, xAxisMowLimit = Seq(0.0))
     val managementTechnique = ManagementTechnique.Alea
     //  PlantGrowth c'est la liste des param pour R
 

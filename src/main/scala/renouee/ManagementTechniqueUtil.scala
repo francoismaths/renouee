@@ -62,7 +62,6 @@ object ManagementTechniqueUtil {
     */
 
 
-
     val allPlants= (PlantEvolution.plants composeTraversal Each.each )
 
     val tempAfterMow = allPlants.modify(fieldutil.slaveMowingEffectPeriphery(plantGrowth.mowingParameter)(distanceLimitMow,xCenterStand,yCenterStand))(plantEvolution)  : PlantEvolution

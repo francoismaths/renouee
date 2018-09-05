@@ -250,9 +250,9 @@ object test_Main extends App {
 
 
   //  Pour tester rapidement
-  lazy val p = Seq(1,0,0.5)
-  lazy val tau = Seq(3,0,1).map(_.toDouble)
-  lazy val popSizes = Seq(3.0,10.0,18.0)
+  lazy val p = Seq(0.9)
+  lazy val tau = Seq(0).map(_.toDouble)
+  lazy val popSizes = Seq(1500.0)
 
 
   lazy val path_Dir1 = "simu_aire2008"
@@ -286,7 +286,7 @@ object test_Main extends App {
 
   // if we want to  use a file for the value of the paameter (plantGrowth), for example the result of nsga caliration openmole
 
-  val nameFile : String = "ParamMin"
+  val nameFile : String = "ParamMin2"
   val r = File( nameFile  + ".csv")
   val lines = r.lines.toVector
 

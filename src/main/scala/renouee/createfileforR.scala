@@ -154,6 +154,28 @@ package object createfileforR {
 
   }
 
+  //////////////////////////////////////////////////////////
+  ////////////   Sequence of management, calcul6
+  /////////////////////////////////////////////////////////
+
+  def slaveWriteManagemementSide(h : better.files.File , T:Seq[Double], tau:Seq[Double], xAxisMowLimit:Double ) = {
+    h.overwrite("param,"+ List.fill(T.length)("val").mkString(",") )
+    h.appendLine().append("T," + T.mkString(",") )
+    h.appendLine().append("tau," + tau.mkString(",") )
+    h.appendLine().append("xAxisMowLimit," + List.fill(T.length)(xAxisMowLimit).mkString(",") )
+  }
+
+
+  def slaveWriteManagemement(h : better.files.File , T:Seq[Double], tau:Seq[Double], proportionMowing:Seq[Double], managementTechnique: ManagementTechnique) = {
+    h.overwrite("param,"+ List.fill(T.length)("val").mkString(",") )
+    h.appendLine().append("T," + T.mkString(",") )
+    h.appendLine().append("tau," + tau.mkString(",") )
+    h.appendLine().append("proportionMowing," + proportionMowing.mkString(",") )
+    h.appendLine().append("technique," + managementTechnique)
+  }
+
+
+
   /*
 
   ///////////////////////////////////////////////////////////
